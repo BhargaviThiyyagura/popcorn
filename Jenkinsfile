@@ -13,7 +13,7 @@ pipeline {
     }
     stage('docker push') {
       steps {
-        sh '''docker login -u bhargavit -p 
+        sh '''docker login -u bhargavit -p $DOCKER_PASSWORD
 docker push bhargavit/popcorn:BUILD_NUMBER'''
       }
     }
