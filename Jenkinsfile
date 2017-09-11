@@ -8,7 +8,13 @@ pipeline {
     }
     stage('build docker') {
       steps {
-        sh 'docker build -t popcorn:$BUILD_NUMBER .'
+        sh 'docker build -t bhargavit/popcorn:$BUILD_NUMBER .'
+      }
+    }
+    stage('docker push') {
+      steps {
+        sh '''docker login -u bhargavit -p 
+docker push bhargavit/popcorn:BUILD_NUMBER'''
       }
     }
   }
