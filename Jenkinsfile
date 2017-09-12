@@ -12,25 +12,28 @@ pipeline {
 '''
       }
     }
-    
-     stage('build docker') {
+    stage('build docker') {
       steps {
         sh '''docker build -t bhargavit/popcorn:$BUILD_NUMBER .
 '''
       }
     }
-    
     stage('testing') {
       steps {
         sh '''docker run bhargavit/popcorn:$BUILD_NUMBER rails test
 '''
       }
     }
-   
     stage('docker push') {
       steps {
         sh '''docker login -u bhargavit -p $DOCKER_PASSWORD
-docker push bhargavit/popcorn:$BUILD_NUMBER
+docker push chyld/popcorn:$BUILD_NUMBER
+'''
+      }
+    }
+    stage('deply to k8s') {
+      steps {
+        sh '''envsubst < deployment.yaml | kubectl apply -f -
 '''
       }
     }
