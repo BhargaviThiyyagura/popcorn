@@ -13,18 +13,20 @@ pipeline {
       }
     }
     
-    stage('testing') {
-      steps {
-        sh '''rails test
-'''
-      }
-    }
-    stage('build docker') {
+     stage('build docker') {
       steps {
         sh '''docker build -t bhargavit/popcorn:$BUILD_NUMBER .
 '''
       }
     }
+    
+    stage('testing') {
+      steps {
+        sh '''docker run bhargavit/popcorn:$BUILD_NUMBER rails test
+'''
+      }
+    }
+   
     stage('docker push') {
       steps {
         sh '''docker login -u bhargavit -p $DOCKER_PASSWORD
